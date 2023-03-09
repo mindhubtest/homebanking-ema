@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hombanking | Accounts</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div>
+                <h1 style="color: white;">HomeBanking</h1>
+            </div>
+            <div class="toggle">
+                <input type="checkbox" id="active">
+                <label for="active" class="menu-btn"><span></span></label>
+                <label for="active" class="close"></label>
+                <div class="wrapper">
+                    <ul>
+                        <li><a href="transfers.html">Transfers</a></li>
+                        <li><a href="cards.html">Cards</a></li>
+                        <li><a href="accounts.html">Accounts</a></li>
+                        <li><a href="loan-application.html">Loans</a></li>
+                        <li><a href="" @click="logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav class="nav-horizontal">
+                <a href="transfers.html">Transfers</a>
+                <a href="cards.html">Cards</a>
+                <a href="accounts.html">Accounts</a>
+                <a href="loan-application.html">Loans</a>
+                <a href="" @click="logout">Logout</a>
+            </nav>
+        </header>
+        <div>
+            <h2 class=" Accounts">Account Summary</h2>
+
+        </div>
+        <main>
+
+            <section class="balances">
+                <div
+                    :class=" accounts.length < 3 ? 'row row-cols-1 row-cols-md-2 g-4 mt-5' : 'row row-cols-1 row-cols-md-3 g-4 mt-5'">
+                    <div v-for="account in accounts" class="col">
+                        <div class="card">
+                            <div>
+                                <h3>{{account.number}}</h3>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${{account.balance}}</h5>
+                            </div>
+                            <div>
+                                <h5>Account {{account.accountType}}</h5>
+                            </div>
+                            <div>
+                                <a :href="'/account.html?id=' + account.id" style="color: black;">See
+                                    Transactions</a>
+                            </div>
+                            <div>
+                                <input class="my-2 botones" type="button" value="Delete"
+                                    @click="deleteAccount(account.number)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="d-flex justify-content-center">
+                <!-- Button trigger modal -->
+                <input type="button" class="btn btn-primary createAccBtn" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" value="Add Account" v-show="accounts.length < 3">
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                Select Type Account </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close">
+                                <input @click="AddAccount('Ahorro')" type="button" class="btn btn-primary"
+                                    value="Ahorro">
+                                <input @click="AddAccount('Corriente')" type="button" class="btn btn-primary"
+                                    value="Corriente">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flechaAbajo">
+                <img class="imagenCuentas" src="./img/Project_181___Icon__-23.jpg" alt="">
+                <a href="#loansTable"><img src="./img/Arrow-down.png" alt="Loans"></a>
+            </div>
+            <div class="divisor"></div>
+            <section id="loansTable">
+
+
+                <div v-if="loans.length == 0" class="donthaveloans">
+                    <h2>Dont have loans</h2>
+
+                </div>
+                <div v-else>
+                    <h2 class="clientLoansTitulo">Client Loans</h2>
+                    <table class="table">
+                        <thead>
+                            <tr class="table-head">
+                                <th scope="col">n°</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Payments</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="cliente in loans">
+                            <tr>
+                                <td>{{cliente.idClientLoan}}</td>
+                                <td>${{cliente.amount}}</td>
+                                <td>{{cliente.name}}</td>
+                                <td>{{cliente.payments}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+            <section class="Banner">
+                <div>
+                    <h2>Need money?</h2>
+                    <h3>Loans up to $500,000 are available.</h3>
+                    <a href="loan-application.html"><input class="mt-2 botones" type="button" value="APPLY NOW"></a>
+                </div>
+                <div>
+                    <img src="./img/Loans.png" alt="">
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+    <!-- script axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- script vue -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <!-- mis scripts -->
+    <script src="js/accounts.js"></script>
+
+</body>
+<footer>
+    <p>Homebanking - Emmanuel Leiva</p>
+</footer>
+
+</html>

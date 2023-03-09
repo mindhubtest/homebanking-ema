@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="app">
+        <header>
+            <div>
+                <h1 style="color: white;">HomeBanking</h1>
+            </div>
+            <div class="toggle">
+                <input type="checkbox" id="active">
+                <label for="active" class="menu-btn"><span></span></label>
+                <label for="active" class="close"></label>
+                <div class="wrapper">
+                    <ul>
+                        <li><a href="transfers.html">Transfers</a></li>
+                        <li><a href="cards.html">Cards</a></li>
+                        <li><a href="accounts.html">Accounts</a></li>
+                        <li><a href="loan-application.html">Loans</a></li>
+                        <li><a href="" @click="logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav class="nav-horizontal">
+                <a href="transfers.html">Transfers</a>
+                <a href="cards.html">Cards</a>
+                <a href="accounts.html">Accounts</a>
+                <a href="loan-application.html">Loans</a>
+                <a href="" @click="logout">Logout</a>
+            </nav>
+        </header>
+        <main>
+
+            <form>
+
+                <h2>Loans</h2>
+
+                <label for="typeLoan">Loan Type</label>
+                <select v-model="loanId" class="my-2" name="" id="typeLoan">
+                    <option value="">Select Loan</option>
+                    <option v-for="loan in loans" :value="loan.id">{{loan.name}} </option>
+                </select>
+                <P style="color: white;" v-if="loanId != 0">Max Amount Loan ${{loans[loanId - 1].maxAmount}}</P>
+                <P style="color: white;" v-if="loanId != 0">Fee %{{loans[loanId - 1].porcentaje * 100}}</P>
+
+                <label v-if="loanId != 0" class="mt-2" for="payments">Payments</label>
+                <select v-if="loanId != 0" v-model="loanPayment" class="my-2" name="" id="payments">
+                    <option value="">Select</option>
+                    <option v-for="loan in loans[loanId - 1].payments" :value="loan">{{loan}}</option>
+
+                </select>
+
+
+                <label for="account">Account Destiny</label>
+                <select v-model="accountDest" name="" id="account">
+                    <option value="">Select</option>
+                    <option v-for="account in accounts" :value="account.number">{{account.number}}</option>
+                </select>
+
+                <label class="mt-2" for="amount">Amount</label>
+                <input v-model="amount" class="my-2" type="number" id="amount" placeholder="Min 10000"
+                    style="text-align: center;">
+
+                <!-- Button trigger modal -->
+                <input type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    value="Apply"
+                    :disabled="amount < 10000 || amount > loans[loanId - 1].maxAmount || accountDest == 0 || loanPayment == 0 ">
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                Are you sure you want to make the loan? </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close">
+                                <input type="button" class="btn btn-primary" value="Apply" @click="completeLoan()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </main>
+        <div class="imagenLoanApplicationContainer">
+            <img class="imagenLoanApplication" src="./img/Project_185-15.jpg" alt="">
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- script axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- script vue -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- swal -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- mis scripts -->
+    <script src="js/loan-application.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <footer>
+        <p>Homebanking - Emmanuel Leiva</p>
+    </footer>
+</body>
+
+
+</html>
